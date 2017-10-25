@@ -19,7 +19,7 @@ scan_lines_current = []
 
 ################################################################################
 
-def brz(x0, y0, x1, y1):
+def brz(x0, y0, x1, y1, r, g, b):
     print "Bresenham's line algorithm"
     pixels = image_temp.load()
 
@@ -31,9 +31,8 @@ def brz(x0, y0, x1, y1):
     if dx > dy:
         err = dx / 2.0
         while x != x1:
-            #self.set(x, y)
             try:
-                pixels[x,y] = (255,0,0)
+                pixels[x,y] = (r,g,b)
             except Exception:
                 print 'pixels ' + str(x) + ' ' + str(y) + ' out of bounds'
             err -= dy
@@ -44,9 +43,8 @@ def brz(x0, y0, x1, y1):
     else:
         err = dy / 2.0
         while y != y1:
-            #self.set(x, y)
             try:
-                pixels[x,y] = (255,0,0)
+                pixels[x,y] = (r,g,b)
             except Exception:
                 print 'pixels ' + str(x) + ' ' + str(y) + ' out of bounds'
             err -= dx
@@ -54,9 +52,8 @@ def brz(x0, y0, x1, y1):
                 x += sx
                 err += dy
             y += sy
-    #self.set(x, y)
     try:
-        pixels[x,y] = (255,0,0)
+        pixels[x,y] = (r,g,b)
     except Exception:
         print 'pixels ' + str(x) + ' ' + str(y) + ' out of bounds'
 
@@ -132,7 +129,7 @@ def loadscan():
         y_1 = int(points[1])
         x_2 = int(points[2])
         y_2 = int(points[3])
-        brz(x_1,y_1,x_2,y_2)
+        brz(x_1,y_1,x_2,y_2, 255, 0, 0)
         scan_lines_loaded.append([x_1,y_1,x_2,y_2])
         scan_lines_current.append([x_1,y_1,x_2,y_2])
         num = num + adder
@@ -154,7 +151,7 @@ def updatescanlines():
         y_1 = int(points[1])
         x_2 = int(points[2])
         y_2 = int(points[3])
-        brz(x_1,y_1,x_2,y_2)
+        brz(x_1,y_1,x_2,y_2, 255, 0, 0)
     return 0
 
 def savescan():
@@ -215,7 +212,7 @@ y2.pack(side=LEFT)
 
 def drawer():
     print 'drawing... ' + '(' + str(x1.get()) + ',' + str(y1.get()) + '),' + '(' + str(x2.get()) + ',' + str(y2.get()) + ')'
-    brz(int(x1.get()),int(y1.get()),int(x2.get()),int(y2.get()))
+    brz(int(x1.get()),int(y1.get()),int(x2.get()),int(y2.get()),0,255,0)
     scan_lines_current.append([int(x1.get()),int(y1.get()),int(x2.get()),int(y2.get())])
 
 btnDraw = Button(lineFrame, text='Draw', command=drawer)
@@ -306,7 +303,6 @@ def scale():
         scan_lines_current[i][2] = int(scan_lines_current[i][2] + x_guy)
         scan_lines_current[i][3] = int(scan_lines_current[i][3] + y_guy)
     print scan_lines_current
-    print scan_lines_current
     updatescanlines()
 
 btnScale = Button(scaleFrame, text='Apply', command=scale)
@@ -337,15 +333,15 @@ def basicrotate():
         px2 = float(scan_lines_current[i][2])
         py2 = float(scan_lines_current[i][3])
 
-        qx1 = math.cos(angle_val) * px1 - math.sin(angle_val) * py1
-        qy1 = math.sin(angle_val) * px1 + math.cos(angle_val) * py1
-        qx2 = math.cos(angle_val) * px2 - math.sin(angle_val) * py2
-        qy2 = math.sin(angle_val) * px2 + math.cos(angle_val) * py2
+        new_x1 = math.cos(angle_val) * px1 - math.sin(angle_val) * py1
+        new_y1 = math.sin(angle_val) * px1 + math.cos(angle_val) * py1
+        new_x2 = math.cos(angle_val) * px2 - math.sin(angle_val) * py2
+        new_y2 = math.sin(angle_val) * px2 + math.cos(angle_val) * py2
 
-        scan_lines_current[i][0] = int(qx1)
-        scan_lines_current[i][1] = int(qy1)
-        scan_lines_current[i][2] = int(qx2)
-        scan_lines_current[i][3] = int(qy2)
+        scan_lines_current[i][0] = int(new_x1)
+        scan_lines_current[i][1] = int(new_y1)
+        scan_lines_current[i][2] = int(new_x2)
+        scan_lines_current[i][3] = int(new_y2)
     print scan_lines_current
     updatescanlines()
 
@@ -359,15 +355,15 @@ def rotate():
         px2 = float(scan_lines_current[i][2])
         py2 = float(scan_lines_current[i][3])
 
-        qx1 = ox + math.cos(angle_val) * (px1 - ox) - math.sin(angle_val) * (py1 - oy)
-        qy1 = oy + math.sin(angle_val) * (px1 - ox) + math.cos(angle_val) * (py1 - oy)
-        qx2 = ox + math.cos(angle_val) * (px2 - ox) - math.sin(angle_val) * (py2 - oy)
-        qy2 = oy + math.sin(angle_val) * (px2 - ox) + math.cos(angle_val) * (py2 - oy)
+        new_x1 = ox + math.cos(angle_val) * (px1 - ox) - math.sin(angle_val) * (py1 - oy)
+        new_y1 = oy + math.sin(angle_val) * (px1 - ox) + math.cos(angle_val) * (py1 - oy)
+        new_x2 = ox + math.cos(angle_val) * (px2 - ox) - math.sin(angle_val) * (py2 - oy)
+        new_y2 = oy + math.sin(angle_val) * (px2 - ox) + math.cos(angle_val) * (py2 - oy)
 
-        scan_lines_current[i][0] = int(qx1)
-        scan_lines_current[i][1] = int(qy1)
-        scan_lines_current[i][2] = int(qx2)
-        scan_lines_current[i][3] = int(qy2)
+        scan_lines_current[i][0] = int(new_x1)
+        scan_lines_current[i][1] = int(new_y1)
+        scan_lines_current[i][2] = int(new_x2)
+        scan_lines_current[i][3] = int(new_y2)
     print scan_lines_current
     updatescanlines()
 
@@ -376,7 +372,7 @@ btnRotateb.pack(side=LEFT)
 btnRotate = Button(rotateFrame, text='Apply Rotate', command=rotate)
 btnRotate.pack(side=LEFT)
 
-######### TODO Matrix Transform
+######### NOTE Matrix Transform
 
 matFrame = Frame(width=600)
 matFrame.pack()
@@ -389,7 +385,47 @@ matrix.pack(side=LEFT)
 mat_dl = Entry(matFrame, text='Datalines')
 mat_dl.insert(END,'Datalines')
 mat_dl.pack(side=LEFT)
-btnMatTfm = Button(matFrame, text='Apply')
+
+# 0.93969262078 -0.34202014332 0.93969262078 0.34202014332
+# 20 deg rot
+def mat_transform():
+    if mat_dl.get() == '':
+        print 'I guess just do it on the other guys'
+    else:
+        lines = mat_dl.get().split(",")
+        print lines
+        for l in lines:
+            pts = l.split(" ")
+            scan_lines_current.append([int(pts[0]),int(pts[1]),int(pts[2]),int(pts[3])])
+    updatescanlines()
+    print 'matrix transformation ...'
+    values = matrix.get().split(" ")
+    v00 = float(values[0])
+    v01 = float(values[1])
+    v10 = float(values[2])
+    v11 = float(values[3])
+    print scan_lines_current
+    for i in range(0,len(scan_lines_current)):
+        x_1 = scan_lines_current[i][0]
+        y_1 = scan_lines_current[i][1]
+        x_2 = scan_lines_current[i][2]
+        y_2 = scan_lines_current[i][3]
+
+        x_1t = int(v00 * x_1 + v01 * y_1)
+        y_1t = int(v10 * x_1 + v11 * y_1)
+        x_2t = int(v00 * x_2 + v01 * y_2)
+        y_2t = int(v10 * x_2 + v11 * y_2)
+
+        scan_lines_current[i][0] = x_1t
+        scan_lines_current[i][1] = y_1t
+        scan_lines_current[i][2] = x_2t
+        scan_lines_current[i][3] = y_2t
+    print scan_lines_current
+    updatescanlines()
+
+
+
+btnMatTfm = Button(matFrame, text='Apply', command=mat_transform)
 btnMatTfm.pack(side=LEFT)
 
 ######### TODO display pix
