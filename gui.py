@@ -114,7 +114,7 @@ def loadscan():
     arg = str(ent_arg.get())
     num = 1
     adder = 1
-    if (arg == ''):
+    if (arg == '' or arg == 'arg'):
         print 'no arg'
         adder = 0
     else:
@@ -379,10 +379,10 @@ matFrame.pack()
 
 matLabel = Label(matFrame,text='Apply Matrix Transform')
 matLabel.pack(side=LEFT)
-matrix = Entry(matFrame, text='matrix')
+matrix = Entry(matFrame)
 matrix.insert(END,'matrix')
 matrix.pack(side=LEFT)
-mat_dl = Entry(matFrame, text='Datalines')
+mat_dl = Entry(matFrame)
 mat_dl.insert(END,'Datalines')
 mat_dl.pack(side=LEFT)
 
@@ -435,13 +435,34 @@ iodFrame.pack()
 
 iodLabel = Label(iodFrame,text='Dispaly Scanlines')
 iodLabel.pack(side=LEFT)
-iod_dl = Entry(iodFrame, text='datalines')
+iod_dl = Entry(iodFrame)
 iod_dl.insert(END,'datalines')
 iod_dl.pack(side=LEFT)
-iod_num = Entry(iodFrame, text='num')
+iod_num = Entry(iodFrame)
 iod_num.insert(END,'num')
 iod_num.pack(side=LEFT)
-btnIOD3 = Button(iodFrame, text='Apply DisplayPixels')
+
+def displaypixs():
+    arg = str(iod_num.get())
+    num = 1
+    adder = 1
+    if (arg == '' or arg == 'num'):
+        print 'no arg'
+        adder = 0
+    else:
+        arg = int(arg)
+    lines = iod_dl.get().split(",")
+    print 'lines ' + str(lines)
+    for l in lines:
+        if (num > arg and adder == 1):
+            break
+        pts = l.split(" ")
+        print pts
+        scan_lines_current.append([int(pts[0]),int(pts[1]),int(pts[2]),int(pts[3])])
+        num = num + adder
+    updatescanlines()
+
+btnIOD3 = Button(iodFrame, text='Apply',command=displaypixs)
 btnIOD3.pack(side=LEFT)
 
 #########
