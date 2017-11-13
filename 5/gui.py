@@ -89,15 +89,21 @@ def encode():
     #print to_encode
     n = 0
     i = 0
+    j = 0
     for char in bin_encode:
         # print '--'
         # print char
         # print 'before: ' + str(pixels[0,i])
+        if (i == 500):
+            j = j + 1
+            i = 0
 
-        if int(char)%2 == 0 and pixels[0,i][0]%2 == 1:
-            pixels[0,i] = (pixels[0,i][0] + 1, pixels[0,i][1], pixels[0,i][2])
-        elif int(char)%2 == 1 and pixels[0,i][0]%2 == 0:
-            pixels[0,i] = (pixels[0,i][0] - 1, pixels[0,i][1], pixels[0,i][2])
+        print str(i) + ',' + str(j)
+
+        if int(char)%2 == 0 and pixels[j,i][0]%2 == 1:
+            pixels[j,i] = (pixels[j,i][0] + 1, pixels[j,i][1], pixels[j,i][2])
+        elif int(char)%2 == 1 and pixels[j,i][0]%2 == 0:
+            pixels[j,i] = (pixels[j,i][0] - 1, pixels[j,i][1], pixels[j,i][2])
 
         # print 'after: ' + str(pixels[0,i])
         # print '--'
@@ -155,11 +161,11 @@ def decode():
             convert_str = convert_str + str(y)
         char = chr(int(convert_str, 2))
         decoded_str = decoded_str + char
-        if count > 25:
+        if count > 100:
             break
         count = count + 1
 
-    print decoded_str[:25] + '\n'
+    print decoded_str[:100] + '\n'
     print 'done!'
 
 
