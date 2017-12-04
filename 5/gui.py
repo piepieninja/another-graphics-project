@@ -161,11 +161,11 @@ def decode():
             convert_str = convert_str + str(y)
         char = chr(int(convert_str, 2))
         decoded_str = decoded_str + char
-        if count > 100:
-            break
+        # if count > 500:
+        #     break
         count = count + 1
 
-    print decoded_str[:100] + '\n'
+    print decoded_str + '\n'
     print 'done!'
 
 
