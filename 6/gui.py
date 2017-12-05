@@ -255,7 +255,6 @@ def find_proj_matrix():
                 [ 0.0,  3.2, -0.6, 0.0],
                 [ 0.0,  0.0, 12.5, 1.0]]
 
-
     # R = matrix_multiply(V_test,N,4)
     # print_mat(R)
 
@@ -300,40 +299,44 @@ btnEnter.pack(side=LEFT)
 stegFrame = Frame(width=screen_size)
 stegFrame.pack()
 
+trans = Entry(stegFrame, text='trans')
+trans.insert(END,'translate')
+trans.pack(side=LEFT)
+
 def px():
-    print 'x+=0.5'
+    print 'x++'
     for coord in verts:
-        coord[0] += 0.5
+        coord[0] += float(trans.get())
     redraw()
 
 def nx():
-    print 'x-=0.5'
+    print 'x--'
     for coord in verts:
-        coord[0] -= 0.5
+        coord[0] -= float(trans.get())
     redraw()
 
 def py():
-    print 'y+=0.5'
+    print 'y++'
     for coord in verts:
-        coord[1] += 0.5
+        coord[1] += float(trans.get())
     redraw()
 
 def ny():
-    print 'y-=0.5'
+    print 'y--'
     for coord in verts:
-        coord[1] -= 0.5
+        coord[1] -= float(trans.get())
     redraw()
 
 def pz():
-    print 'z+=0.5'
+    print 'z++'
     for coord in verts:
-        coord[2] += 0.5
+        coord[2] += float(trans.get())
     redraw()
 
 def nz():
-    print 'z-=0.5'
+    print 'z--'
     for coord in verts:
-        coord[2] -= 0.5
+        coord[2] -= float(trans.get())
     redraw()
 
 
@@ -354,6 +357,100 @@ btnLf.pack(side=LEFT)
 
 btnRt = Button(stegFrame, text='-z', command=nz)
 btnRt.pack(side=LEFT)
+
+### rot frame
+rotFrame = Frame(width=screen_size)
+rotFrame.pack()
+
+angle = Entry(rotFrame, text='angle')
+angle.insert(END,'angle')
+angle.pack(side=LEFT)
+
+def rx():
+    r   = [[1.0,0.0,0.0],
+           [0.0,math.cos(math.radians(float(angle.get()))),-1.0*math.sin(math.radians(float(angle.get())))],
+           [0.0,math.sin(math.radians(float(angle.get()))),math.cos(math.radians(float(angle.get())))]]
+    r = np.mat(r)
+    for coord in verts:
+        x = np.mat(coord)
+        y = np.matmul(x,r)
+        print y
+        coord[0] = y.item(0)
+        coord[1] = y.item(1)
+        coord[2] = y.item(2)
+    redraw()
+
+def ry():
+    r   = [[math.cos(math.radians(float(angle.get()))),0.0,math.sin(math.radians(float(angle.get())))],
+           [0.0,1.0,0.0],
+           [-1.0*math.sin(math.radians(float(angle.get()))),0.0,math.cos(math.radians(float(angle.get())))]]
+    r = np.mat(r)
+    for coord in verts:
+        x = np.mat(coord)
+        y = np.matmul(x,r)
+        print y
+        coord[0] = y.item(0)
+        coord[1] = y.item(1)
+        coord[2] = y.item(2)
+    redraw()
+
+def rz():
+    r   = [[math.cos(math.radians(float(angle.get()))),-1.0*math.sin(math.radians(float(angle.get()))),0.0],
+           [math.sin(math.radians(float(angle.get()))),math.cos(math.radians(float(angle.get()))),0.0],
+           [0.0,0.0,1.0]]
+    r = np.mat(r)
+    for coord in verts:
+        x = np.mat(coord)
+        y = np.matmul(x,r)
+        print y
+        coord[0] = y.item(0)
+        coord[1] = y.item(1)
+        coord[2] = y.item(2)
+    redraw()
+
+btnrx = Button(rotFrame, text='rotate x', command=rx)
+btnrx.pack(side=LEFT)
+
+btnry = Button(rotFrame, text='rotate y', command=ry)
+btnry.pack(side=LEFT)
+
+btnrz = Button(rotFrame, text='rotate z', command=rz)
+btnrz.pack(side=LEFT)
+
+### scale frame
+scaleFrame = Frame(width=screen_size)
+scaleFrame.pack()
+
+scaler = Entry(scaleFrame, text='scaler')
+scaler.insert(END,'scaler')
+scaler.pack(side=LEFT)
+
+def sx():
+    print 'scaling x'
+    for coord in verts:
+        coord[0] *= float(scaler.get())
+    redraw()
+
+def sy():
+    print 'scaling y'
+    for coord in verts:
+        coord[1] *= float(scaler.get())
+    redraw()
+
+def sz():
+    print 'scaling z'
+    for coord in verts:
+        coord[2] *= float(scaler.get())
+    redraw()
+
+btnsx = Button(scaleFrame, text='scale x', command=sx)
+btnsx.pack(side=LEFT)
+
+btnsy = Button(scaleFrame, text='scale y', command=sy)
+btnsy.pack(side=LEFT)
+
+btnsz = Button(scaleFrame, text='scale z', command=sz)
+btnsz.pack(side=LEFT)
 
 #########
 root.bind("<Return>", redraw)
