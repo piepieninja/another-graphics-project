@@ -290,7 +290,7 @@ def redraw():
     updatescanlines()
 
 
-btnEnter = Button(loadFrame, text='Redraw', command=redraw)
+btnEnter = Button(loadFrame, text='Redraw / Load', command=redraw)
 btnEnter.pack(side=LEFT)
 
 
@@ -359,6 +359,19 @@ btnRt = Button(stegFrame, text='-z', command=nz)
 btnRt.pack(side=LEFT)
 
 ### rot frame
+asdfFrame = Frame(width=screen_size)
+asdfFrame.pack()
+
+asdfx = Entry(asdfFrame, text='')
+asdfx.insert(END,'0.0')
+asdfx.pack(side=LEFT)
+asdfy = Entry(asdfFrame, text='')
+asdfy.insert(END,'0.0')
+asdfy.pack(side=LEFT)
+asdfz = Entry(asdfFrame, text='')
+asdfz.insert(END,'0.0')
+asdfz.pack(side=LEFT)
+
 rotFrame = Frame(width=screen_size)
 rotFrame.pack()
 
@@ -372,12 +385,15 @@ def rx():
            [0.0,math.sin(math.radians(float(angle.get()))),math.cos(math.radians(float(angle.get())))]]
     r = np.mat(r)
     for coord in verts:
+        coord[0] -= float(asdfx.get())
+        coord[1] -= float(asdfy.get())
+        coord[2] -= float(asdfz.get())
         x = np.mat(coord)
         y = np.matmul(x,r)
         print y
-        coord[0] = y.item(0)
-        coord[1] = y.item(1)
-        coord[2] = y.item(2)
+        coord[0] = y.item(0) + float(asdfx.get())
+        coord[1] = y.item(1) + float(asdfy.get())
+        coord[2] = y.item(2) + float(asdfz.get())
     redraw()
 
 def ry():
@@ -386,12 +402,15 @@ def ry():
            [-1.0*math.sin(math.radians(float(angle.get()))),0.0,math.cos(math.radians(float(angle.get())))]]
     r = np.mat(r)
     for coord in verts:
+        coord[0] -= float(asdfx.get())
+        coord[1] -= float(asdfy.get())
+        coord[2] -= float(asdfz.get())
         x = np.mat(coord)
         y = np.matmul(x,r)
         print y
-        coord[0] = y.item(0)
-        coord[1] = y.item(1)
-        coord[2] = y.item(2)
+        coord[0] = y.item(0) + float(asdfx.get())
+        coord[1] = y.item(1) + float(asdfy.get())
+        coord[2] = y.item(2) + float(asdfz.get())
     redraw()
 
 def rz():
@@ -400,12 +419,15 @@ def rz():
            [0.0,0.0,1.0]]
     r = np.mat(r)
     for coord in verts:
+        coord[0] -= float(asdfx.get())
+        coord[1] -= float(asdfy.get())
+        coord[2] -= float(asdfz.get())
         x = np.mat(coord)
         y = np.matmul(x,r)
         print y
-        coord[0] = y.item(0)
-        coord[1] = y.item(1)
-        coord[2] = y.item(2)
+        coord[0] = y.item(0) + float(asdfx.get())
+        coord[1] = y.item(1) + float(asdfy.get())
+        coord[2] = y.item(2) + float(asdfz.get())
     redraw()
 
 btnrx = Button(rotFrame, text='rotate x', command=rx)
