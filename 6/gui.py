@@ -13,7 +13,7 @@ global scan_lines_current
 scan_lines_loaded  = []
 scan_lines_current = []
 
-camera_position = [6, 8, 7.5]
+camera_position = [6, 8, 6.5]
 camera_unit     = [-0.48,-0.64,-0.6] # this can be a constant?
 
 verts  = [[-1, 1,-1], # 0 A
